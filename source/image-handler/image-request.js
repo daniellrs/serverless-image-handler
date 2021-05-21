@@ -61,6 +61,8 @@ class ImageRequest {
             this.key = this.parseImageKey(event, this.requestType);
             this.edits = this.parseImageEdits(event, this.requestType);
             this.originalImage = await this.getOriginalImage(this.bucket, this.key);
+            // this.externalImage = await this.getExternalImage(this.bucket, this.key);
+            console.log(this.originalImage, typeof this.originalImage);
             this.headers = this.parseImageHeaders(event, this.requestType);
 
             if (!this.headers) {
