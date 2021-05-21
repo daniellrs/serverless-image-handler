@@ -121,9 +121,11 @@ const getResponseHeaders = (isErr = false, isAlb = false) => {
 
 exports.handler = imageHandler
 
+const base64 = 'eyJpbWFnZSI6Imh0dHBzOi8vaGlwZXJpZGVhbC52dGV4aW1nLmNvbS5ici9hcnF1aXZvcy9pZHMvMTY3NjYwLTEwMDAtMTAwMC8yNzUwMi5qcGciLCJlZGl0cyI6eyJyZXNpemUiOnsid2lkdGgiOjEyNCwiaGVpZ2h0IjoxMjQsImZpdCI6ImZpbGwifX19'
+
 imageHandler({
     resource: '/{proxy+}',
-    path: '/eyJidWNrZXQiOiJtdWRlZSIsImtleSI6InN0b3JhZ2UvcmVhbHRpZXMvMWYyNzIyZDYtYWY4YS00ODgxLWI1ZmEtMzMyZjViZTJlZGI4XzE1NjA4MDc0MjE2NTQvRkwyMTEuanBlZyIsImVkaXRzIjp7InJlc2l6ZSI6eyJ3aWR0aCI6MTIzLCJoZWlnaHQiOjEyMywiZml0IjoiZmlsbCJ9fX0=',
+    path: `/${base64}`,
     httpMethod: 'GET',
     headers: {
       Accept: 'image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8',
@@ -156,7 +158,7 @@ imageHandler({
     queryStringParameters: null,
     multiValueQueryStringParameters: null,
     pathParameters: {
-      proxy: 'eyJidWNrZXQiOiJtdWRlZSIsImtleSI6InN0b3JhZ2UvcmVhbHRpZXMvMWYyNzIyZDYtYWY4YS00ODgxLWI1ZmEtMzMyZjViZTJlZGI4XzE1NjA4MDc0MjE2NTQvRkwyMTEuanBlZyIsImVkaXRzIjp7InJlc2l6ZSI6eyJ3aWR0aCI6MTIzLCJoZWlnaHQiOjEyMywiZml0IjoiZmlsbCJ9fX0='
+      proxy: `${base64}`
     },
     stageVariables: null,
     requestContext: {
@@ -165,7 +167,7 @@ imageHandler({
       httpMethod: 'GET',
       extendedRequestId: 'fsE4LG2roAMFp4A=',
       requestTime: '21/May/2021:17:04:52 +0000',
-      path: '/image/eyJidWNrZXQiOiJtdWRlZSIsImtleSI6InN0b3JhZ2UvcmVhbHRpZXMvMWYyNzIyZDYtYWY4YS00ODgxLWI1ZmEtMzMyZjViZTJlZGI4XzE1NjA4MDc0MjE2NTQvRkwyMTEuanBlZyIsImVkaXRzIjp7InJlc2l6ZSI6eyJ3aWR0aCI6MTIzLCJoZWlnaHQiOjEyMywiZml0IjoiZmlsbCJ9fX0=',
+      path: `/image/${base64}`,
       accountId: '186262579074',
       protocol: 'HTTP/1.1',
       stage: 'image',

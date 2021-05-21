@@ -1,8 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
+const https = require('https');
 const ThumborMapping = require('./thumbor-mapping');
-
 class ImageRequest {
     constructor(s3, secretsManager) {
         this.s3 = s3;
@@ -60,9 +60,14 @@ class ImageRequest {
             this.bucket = this.parseImageBucket(event, this.requestType);
             this.key = this.parseImageKey(event, this.requestType);
             this.edits = this.parseImageEdits(event, this.requestType);
-            this.originalImage = await this.getOriginalImage(this.bucket, this.key);
-            // this.externalImage = await this.getExternalImage(this.bucket, this.key);
-            console.log(this.originalImage, typeof this.originalImage);
+
+            const decoded = this.decodeRequest(event);
+            this.image = decoded.image;
+
+            this.originalImage = this.image ? 
+                await this.getExternalImage(this.image) : 
+                await this.getOriginalImage(this.bucket, this.key);
+
             this.headers = this.parseImageHeaders(event, this.requestType);
 
             if (!this.headers) {
@@ -114,6 +119,29 @@ class ImageRequest {
             console.error(err);
             throw err;
         }
+    }
+
+    getExternalImage(image) {
+        return new Promise(resolve => {
+            https.get(image, res => {
+                let data = [];
+                const headerDate = res.headers && res.headers.date ? res.headers.date : 'no response date';
+                console.log('Status Code:', res.statusCode);
+                console.log('Date in Response header:', headerDate);
+            
+                res.on('data', chunk => {
+                data.push(chunk);
+                });
+            
+                res.on('end', () => {
+                    const buffer = Buffer.concat(data)
+                    console.log('Response ended: ', );
+                    resolve(buffer)
+                });
+            }).on('error', err => {
+                console.log('Error: ', err.message);
+            });
+        })
     }
 
     /**
