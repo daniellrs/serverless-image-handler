@@ -125,18 +125,15 @@ class ImageRequest {
         return new Promise(resolve => {
             https.get(image, res => {
                 let data = [];
-                const headerDate = res.headers && res.headers.date ? res.headers.date : 'no response date';
-                console.log('Status Code:', res.statusCode);
-                console.log('Date in Response header:', headerDate);
-            
+
                 res.on('data', chunk => {
-                data.push(chunk);
+                    data.push(chunk);
                 });
             
                 res.on('end', () => {
-                    const buffer = Buffer.concat(data)
-                    console.log('Response ended: ', );
-                    resolve(buffer)
+                    const imageBuffer = Buffer.concat(data)
+                    this.ContentType = this.inferImageType(imageBuffer);
+                    resolve(imageBuffer)
                 });
             }).on('error', err => {
                 console.log('Error: ', err.message);
